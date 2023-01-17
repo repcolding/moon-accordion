@@ -1,0 +1,14 @@
+{
+  "name": "@verno.digital/moon-accordion",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "esbuild ./src/index.js --outfile=dist/accordion.js --bundle --format=esm"
+  },
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@verno.digital/moon-block": "git+https://github.com/repcolding/moon-block.git",
+    "esbuild": "^0.17.2"
+  }
+}
