@@ -2,7 +2,7 @@ import { moonBlock } from '@verno.digital/moon-block'
 import { setAsyncProperty } from './helpers/set-async-property'
 import { addClass, containsClass, removeClass } from './helpers/class-list'
 import { getPadding } from './helpers/get-padding'
-import { getOptions } from './options/default';
+import { getOptions } from './options/default'
 
 class MoonAccordion {
   #bufferHandlerClick

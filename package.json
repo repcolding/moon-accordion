@@ -7,8 +7,18 @@
     "build": "esbuild ./src/index.js --outfile=dist/accordion.js --bundle --format=esm"
   },
   "types": "./index.d.ts",
+  "keywords": [
+    "@verno/module",
+    "@verno.digital"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/repcolding/moon-accordion.git"
+  },
+  "author": "telegramm: @repcolding; site: https://verno.digital",
   "dependencies": {
-    "@verno.digital/moon-block": "git+https://github.com/repcolding/moon-block.git",
+    "@verno.digital/moon-block": "^1.2.1",
     "esbuild": "^0.17.2"
-  }
+  },
+  "private": false
 }
