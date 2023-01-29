@@ -9,7 +9,10 @@ interface options {
   heightArea: {
     selector: string
   },
-  timeout: number
+  timeout: number,
+  dispatch?: {
+    update?: string
+  }
 }
 
 declare class MoonAccordion {

@@ -2,6 +2,7 @@ import { moonBlock } from '@verno.digital/moon-block'
 import { setAsyncProperty } from './helpers/set-async-property'
 import { addClass, containsClass, removeClass } from './helpers/class-list'
 import { getPadding } from './helpers/get-padding'
+import { getOptions } from './options/default';
 
 class MoonAccordion {
   #bufferHandlerClick
@@ -11,13 +12,17 @@ class MoonAccordion {
     let timeout = undefined
 
     const areaClicked = block.querySelector(this.#options.clickArea.selector)
-    const flexing = block.querySelector(this.#options.flexing.selector)
+    const flexing = block.querySelector(this.#options.heightArea.selector)
 
     const setOpenHeight = () => {
+      const height = `${flexing.scrollHeight + getPadding(block)}px`
+
       setAsyncProperty(flexing, {
         key: 'height',
-        value: `${flexing.scrollHeight + getPadding(block)}px`
+        value: height
       })
+
+      this.#dispatch(block, height)
     }
 
     const setCloseHeight = () => {
@@ -32,10 +37,8 @@ class MoonAccordion {
         key: 'height',
         value: 0
       })
-    }
 
-    const isOpen = () => {
-      return containsClass(block, this.#options.accordion.active)
+      this.#dispatch(block, 0)
     }
 
     const open = () => {
@@ -51,13 +54,9 @@ class MoonAccordion {
       clearTimeout(timeout)
     }
 
-    const closeOthers = () => {
-      others.forEach((inst) => inst.close())
-    }
-
     const handlerClick = () => {
-      isOpen() ? close() : open()
-      closeOthers()
+      this.#isOpen(block) ? close() : open()
+      this.#closeOthers(others)
     }
 
     areaClicked.addEventListener('click', handlerClick)
@@ -73,14 +72,23 @@ class MoonAccordion {
   }
 
   constructor(options) {
-    this.#options = options
+    this.#options = getOptions(options)
+    this.#bufferHandlerClick = []
     this.#init()
   }
 
   destroy () {
-    (this.#bufferHandlerClick ?? []).forEach(({ dom, handler }) => {
+    this.#bufferHandlerClick.forEach(({ dom, handler }) => {
       dom.removeEventListener('click', handler)
     })
+  }
+
+  #isOpen(block) {
+    return containsClass(block, this.#options.accordion.active)
+  }
+
+  #closeOthers(others) {
+    others.forEach((inst) => inst.close())
   }
 
   #init() {
@@ -88,10 +96,13 @@ class MoonAccordion {
   }
 
   #addHandlerBuffer(handler) {
-    this.#bufferHandlerClick = [
-      ...(this.#bufferHandlerClick ?? []),
-      handler
-    ]
+    this.#bufferHandlerClick.push(handler)
+  }
+
+  #dispatch (accordion, height) {
+    accordion.dispatchEvent(
+      new CustomEvent(this.#options.dispatch.update, { bubbles: true, detail: { height } })
+    )
   }
 }
 
