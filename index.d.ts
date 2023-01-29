@@ -12,7 +12,8 @@ interface options {
   timeout: number,
   dispatch?: {
     update?: string
-  }
+  },
+  cssVarPadding?: string
 }
 
 declare class MoonAccordion {

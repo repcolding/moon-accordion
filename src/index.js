@@ -1,7 +1,6 @@
 import { moonBlock } from '@verno.digital/moon-block'
 import { setAsyncProperty } from './helpers/set-async-property'
 import { addClass, containsClass, removeClass } from './helpers/class-list'
-import { getPadding } from './helpers/get-padding'
 import { getOptions } from './options/default'
 
 class MoonAccordion {
@@ -15,7 +14,7 @@ class MoonAccordion {
     const flexing = block.querySelector(this.#options.heightArea.selector)
 
     const setOpenHeight = () => {
-      const height = `${flexing.scrollHeight + getPadding(block)}px`
+      const height = `${flexing.scrollHeight + this.#getCssPadding(block)}px`
 
       setAsyncProperty(flexing, {
         key: 'height',
@@ -102,6 +101,12 @@ class MoonAccordion {
   #dispatch (accordion, height) {
     accordion.dispatchEvent(
       new CustomEvent(this.#options.dispatch.update, { bubbles: true, detail: { height } })
+    )
+  }
+
+  #getCssPadding (accordion) {
+    return parseInt(
+      getComputedStyle(accordion).getPropertyValue(this.#options.cssVarPadding)
     )
   }
 }
